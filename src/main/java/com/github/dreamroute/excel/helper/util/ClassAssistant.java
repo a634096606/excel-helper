@@ -47,8 +47,8 @@ public final class ClassAssistant {
     public static List<String> getHeaderValues(Class<?> cls) {
         List<Field> fields = CacheFactory.findFields(cls);
         List<String> headerValues = new ArrayList<>();
-        for (int i = 0; i < fields.size(); i++) {
-            headerValues.add(fields.get(i).getAnnotation(Column.class).name());
+        for (Field field : fields) {
+            headerValues.add(field.getAnnotation(Column.class).name());
         }
         return headerValues;
     }
@@ -117,7 +117,7 @@ public final class ClassAssistant {
         Integer[] columnWidth = new Integer[fields.size()];
         for (int i = 0; i < fields.size(); i++) {
             int width = fields.get(i).getAnnotation(Column.class).width();
-            columnWidth[i] = width > 0 ? width : 0;
+            columnWidth[i] = Math.max(width, 0);
         }
         return columnWidth;
     }
@@ -193,18 +193,21 @@ public final class ClassAssistant {
             }
         }
 
+        // 检查表头与实体对象是否能够一一对应
+        if (!Objects.equals(fields.size(), headerInfo.size())) {
+            throw new ExcelHelperException("你上传的Excel文件的列与目标对象的列存在差异");
+        }
+
         return headerInfo;
     }
 
     public static List<String> getFormulaValues(Class<?> cls) {
         List<Field> fields = CacheFactory.findFields(cls);
         List<String> formulaValues = new ArrayList<>();
-        for (int i = 0; i < fields.size(); i++) {
-            formulaValues.add(fields.get(i).getAnnotation(Column.class).formula());
+        for (Field field : fields) {
+            formulaValues.add(field.getAnnotation(Column.class).formula());
         }
         return formulaValues;
     }
-
-    ;
 
 }

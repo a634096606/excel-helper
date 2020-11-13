@@ -1,25 +1,18 @@
 package com.github.dreamroute.excel.helper.util;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.streaming.SXSSFSheet;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-
 import com.github.dreamroute.excel.helper.annotation.CellProps;
 import com.github.dreamroute.excel.helper.annotation.HeaderProps;
 import com.github.dreamroute.excel.helper.cache.CacheFactory;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Export workbook util
@@ -163,9 +156,6 @@ public final class ExcelUtil {
 
     /**
      * process style, @Header and @Cell common props.
-     * 
-     * @param cs
-     * @param baseProps
      */
     private static void processHeaderCellStyle(CellStyle cs, HeaderProps headerProps) {
         cs.setAlignment(headerProps.getHorizontal());
@@ -181,8 +171,8 @@ public final class ExcelUtil {
             }
 
             sheet.autoSizeColumn(i);
-            // 1.3 times
-            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) * 13 / 10;
+            // with = with + 200
+            int width = columnWith[i] > 0 ? columnWith[i] : sheet.getColumnWidth(i) + 200;
             sheet.setColumnWidth(i, width);
         }
     }
